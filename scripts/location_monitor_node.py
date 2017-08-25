@@ -13,6 +13,8 @@
 # $ roslaunch turtlebot_gazebo amcl_demo.launch
 #then run this script
 # $ rosrun beginner_tutorials location_monitor_node.py 
+import controller_ui_module
+import navigation_remote
 import rospy
 from nav_msgs.msg import Odometry 
 from geometry_msgs.msg import Twist 
@@ -44,13 +46,21 @@ class location:
 	def getXYvectorToward(self,currentX,currentY):
 		return (self.x - currentX, self.y - currentY)
 
+#This class is for managing ui
+
+	
+
 class CurrentState:
 	def __init__(self, x, y):
 		self.current_x = x
 		self.current_y = y
 
 
-Locations = [location("Cylinder", -1.22, -2.32,0.4578,0.889),location("Dumpster",0.6913,-2.066,0.891,0.455),location("Bookshelf",0.2047,1.22,-0.7596,0.6504),location("Barrier",-3.8,0.2715,0,1)]
+#Locations = [location("Cylinder", -1.22, -2.32,0.4578,0.889),location("Dumpster",0.6913,-2.066,0.891,0.455),location("Bookshelf",0.2047,1.22,-0.7596,0.6504),location("Barrier",-3.8,0.2715,0,1)]
+
+Locations = [location("Kitchen", 0.59, -2.05,0.969, -0.247),location("TV",2.06,3.84,0.908,-0.42),location("Desk",-0.22,0.198,-0.0345,1),location("Dinning",-3.8,0.2715,0,1)]
+
+
 #Hardcode with location=(x,y) and rotation = (z,w)
 
 client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
@@ -126,8 +136,6 @@ button9.pack(side=LEFT)
 
 #MID
 
-global butBool
-butBool = False 
 
 #where a goal destination is send to the navigation stack,
 #The robot should try to go there
