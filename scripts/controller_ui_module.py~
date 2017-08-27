@@ -21,6 +21,11 @@ class UiControllerModule:
 
 		self.rightFrame = Frame(topFrame)
 		self.rightFrame.pack(side=LEFT)
+
+		self.rightButtonList = []
+
+		self.midButtonList = []
+
 		#Right Column for Adding nav goal
 
 		self.setupDownRow()
@@ -30,15 +35,21 @@ class UiControllerModule:
 		self.directionKeyCallbacks = [self.directionButtonCallbackPlaceholder] * 9
 
 		self.setupLeftColumn(directionKeyCallbacks)
-		#This is a list of all callbacks for 9 buttons on the controller, this number 9 shouldn't be changed
+		#This is a list of all callbacks for 9 buttons on the controller, 
+		#this number 9 shouldn't be changed
 		#The functions in the list is meant to be changed, but has to have two parameters
 		#self and an integer
 		#Each func in the list corresponds to one button
 		#0 1 2
 		#3 4 5
 		#6 7 8
+		
+		root.bind("<Key>", self.keyPressed)
+		root.bind('<KeyRelease>',self.keyReleased)
 
-		self.current_number_button = 0
+		
+
+		
 
 	def setupDownRow(self):
 		navi_info = Label(
@@ -69,6 +80,7 @@ class UiControllerModule:
 		midBotFrame.pack(side=TOP)
 		tempFrame = None
 		#Set up all 9 direction buttons
+		directionButList = []
 		for ind in range(0,8):
 			if ind < 3:
 				tempFrame = midUpFrame
@@ -80,17 +92,20 @@ class UiControllerModule:
 				fg="red",
 				command=lambda:self.directionKeyCallbacks[ind]())
 			tempButton.pack(side=LEFT)
+			directionButList.append(tempButton)
+		self.midButtonList = directionButList
 
 	#The defualt call back for all direction button is just printing "Nothing"
 	def directionButtonCallbackPlaceholder(self):
 		print("Nothing")
 
 	#this allows other to add a new button with a callback 
-	def addRightColumnButton(button_text, button_callback)
-		if current_number_button < 11:
-			new_button = Button(rightFrame,text=button_text, fg="black",command=button_callback)
+	def addRightColumnButton(self,button_text, button_callback)
+		if len(rightButtonList) < 11:
+			new_button = Button(rightFrame,text=button_text,
+				fg="black",command=button_callback)
 			new_button .pack()
-			self.current_number_button += 1
+			rightButtonList.append(new_button)
 			print("\nAdd a new button :"+ button_text + 
 				"\n  this is the button number "+str(current_number_button))
 		else:
@@ -98,8 +113,56 @@ class UiControllerModule:
 	
 
 
+	def disableAllRightButtons(self):
+		for but in rightButtonList:
+			but["state"] = 'disable'
 
-	
+	def enableAllRightButtons(self):
+		for but in rightButtonList:
+			but["state"] = 'normal'
+
+	def keyReleased(self,event):
+		print("will do something")
+
+	def keyPressed(self,event):
+		print "pressed", repr(event.char)
+		if event.char == "w":
+			self.pressMidButton(1)
+		elif event.char == "a":
+			self.pressMidButton(3)
+		elif event.char == "s":
+			self.pressMidButton(4)
+		elif event.char == "d":
+			self.pressMidButton(5)
+		elif event.char == "x":
+			self.pressMidButton(7)
+		elif event.char == "1":
+			pressRightButton(0)
+		elif event.char == "2":
+			pressRightButton(1)
+		elif event.char == "3":
+			pressRightButton(2)
+		elif event.char == "4":
+			pressRightButton(3)
+		elif event.char == "\x1b":
+			root.destroy()
+			print("Exit.")
+
+	def pressMidButton(self,index):
+		self.disableAllRightButtons()
+		self.midButtonList[index]["relief"] = "sunken"
+		self.midButtonList[index].invoke()
+		self.midButtonList[index]["state"] = 'disable'
+
+	def pressRightButton(self,index):
+		if index < len(self.rightButtonList):
+			if self.rightButtonList[0]["state"] != 'disable':
+				self.rightButtonList[0]["relief"] = "sunken"
+				self.rightButtonList[0].invoke()
+				self.disableAllLocationButton()
+		else:
+			print("There only "+len(rightButtonList)
+				+" buttons, number "+index+" doesn't exist.")
 
 
 	
