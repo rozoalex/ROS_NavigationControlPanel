@@ -13,8 +13,8 @@
 # $ roslaunch turtlebot_gazebo amcl_demo.launch
 #then run this script
 # $ rosrun beginner_tutorials location_monitor_node.py 
-import controller_ui_module
-import navigation_remote
+import lib.controller_ui_module
+import lib.navigation_remote
 import rospy
 from nav_msgs.msg import Odometry 
 from geometry_msgs.msg import Twist 

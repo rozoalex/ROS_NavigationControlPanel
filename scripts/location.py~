@@ -1,0 +1,7 @@
+class location:
+	def __init__(self, name, inpX,inpY,inpZ,inpW):
+		self.name = name
+		self.x = inpX
+		self.y = inpY
+		self.z = inpZ #z is part of rotation 
+		self.w = inpW #w is part of rotation 

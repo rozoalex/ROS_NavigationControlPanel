@@ -136,8 +136,6 @@ button9.pack(side=LEFT)
 
 #MID
 
-global butBool
-butBool = False 
 
 #where a goal destination is send to the navigation stack,
 #The robot should try to go there
